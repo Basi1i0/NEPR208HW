@@ -1,4 +1,4 @@
-datadir = 'C:\Users\DataAnalysis\Vasily\nepr208\1\ipsc\';
+datadir = 'C:\Users\DataAnalysis\Vasily\repos\NEPR208HW\week1\ipsc\ipsc_noNa\';
 threshold = -20;
 start_time = 300 + 10;
 end_time = 1795;
@@ -56,7 +56,7 @@ hold off
 xlim([200,1200])
 %%
 subplot(1,3,2)
-semilogy(log2(kinetics), overshoots, 'o-')
+plot(log2(kinetics), overshoots, 'o-')
 xlim([-5,6])
 set(gca,'xtick',-5:1:6)
 xtick = get(gca, 'XTick');
