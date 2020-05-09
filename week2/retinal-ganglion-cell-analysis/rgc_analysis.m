@@ -9,7 +9,7 @@ time = h5read('rgc_data.h5', '/time');
 stimulus = h5read('rgc_data.h5', '/stimulus');
 spike_times = h5read('rgc_data.h5', '/spike_times'); %% spikes can happen faster than 10 ms, binnig leads to lost time presision
 
-% stimulus = stimulus(randperm(size(stimulus, 1)), randperm(size(stimulus, 2)) );
+% stimulus = stimulus(:, randperm(size(stimulus, 2)) );
 
 %% Initialize the STE
 % compute the dimensions of the filter (spatial and temporal)
@@ -140,6 +140,8 @@ conditional = conditional / sum(conditional);  % p(stimulus|spike)
 nln = mean(spike_counts) * conditional ./ raw; % p(spike|stimulus)
 
 %% Visualization
+
+mean(u > 1)
 %  **You only need to add titles and axis labels**
 figure(1);
 load('colormap.mat');
@@ -149,6 +151,9 @@ colormap(cmap);
 colorbar;
 axis('image');
 title('Spike-triggered average')
+xlabel("time bin (10 ms/bin)")
+ylabel("pixel")
+
 
 figure(2);
 plot(diag(eigvals), '.');
@@ -164,16 +169,22 @@ imagesc(reshape(eigvecs(:,end), spatial_dim, filter_length), range);
 colormap(cmap);
 axis('image');
 title("PC-1");
+xlabel("time bin (10 ms/bin)")
+ylabel("pixel")
 subplot(132);
 imagesc(reshape(eigvecs(:,end-1), spatial_dim, filter_length), range);
 colormap(cmap);
 axis('image');
 title("PC-2");
+xlabel("time bin (10 ms/bin)")
+ylabel("pixel")
 subplot(133);
 imagesc(reshape(eigvecs(:,end-3), spatial_dim, filter_length), range);
 colormap(cmap);
 axis('image');
 title("PC-3");
+xlabel("time bin (10 ms/bin)")
+ylabel("pixel")
 
 figure(4);
 plot(bin_centers, nonlinearity / dt, 'ro');
@@ -181,3 +192,4 @@ hold on
 plot(bins, nln / dt, 'k-');
 xlabel('STA response')
 ylabel('mean spike count')
+legend('ratio of histogramms', 'direct P(spike|s)')
